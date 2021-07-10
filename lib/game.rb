@@ -41,9 +41,14 @@ class Game
   end
 
   def play_turn
+    # validate to check if game can still be won
+    if @board.board_full? == true
+      puts 'Error: No one can win the game! Please play again.'
+      play_again
+    end
     # get input from user to place symbol
     puts "It's #{@player_1_turn ? @player_1 : @player_2}'s turn!"
-    puts "Please enter the position in which you would like a #{@player_1_turn ? @player_1_symbol : @player_2_symbol} entered."
+    puts "Please enter the position (1-9) in which you would like a #{@player_1_turn ? @player_1_symbol : @player_2_symbol} entered."
     # validate and enter input on board
     @pos = gets.chomp.to_i
     if @board.validate_number?(@pos) == false
@@ -69,18 +74,17 @@ class Game
   def process_turn
     # determine if game is won
     @player_1_turn ? @player_1_array.push(@pos) : @player_2_array.push(@pos)
-    WINNABLE_POSITIONS.each do |array|
-      @won_game = true if (array - (@player_1_turn ? @player_1_array : @player_2_array)).empty?
-    end
-    if @won_game
-      won_game(@player_1_turn ? @player_1 : @player_2)
-    end
+    won_game?
   end
 
-  def won_game(winner)
-    # output winner message and prompt to play again
-    puts "Congratulations, #{winner} has won the game!"
-    play_again
+  def won_game?
+    WINNABLE_POSITIONS.each do |array|
+      next unless (array - (@player_1_turn ? @player_1_array : @player_2_array)).empty?
+
+      # output winner message and prompt to play again
+      puts "Congratulations, #{@player_1_turn ? @player_1 : @player_2} has won the game!"
+      play_again
+    end
   end
 
   def validate_name(name)

@@ -20,20 +20,33 @@ class Board
     @cell[new_pos] = player_symbol.to_s
   end
 
+  def board_full?
+    old_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    num_full = 0
+    old_board.each_with_index do |pos, index|
+      num_full += 1 if @cell[index] != pos
+    end
+    num_full == old_board.length
+  end
+
   def validate_symbol(char, second_symbol, player_1_symbol)
     # prevent user entering more than one character or nothing at all
     if char.length > 1
       puts 'Error: Cannot have character more than one character in length! Please try again.'
-      start_game
+      game = Game.new
+      game.start_game
     elsif char.length.zero?
       puts "Error: Cannot have character that doesn't exist! Please try again."
-      start_game
+      game = Game.new
+      game.start_game
     elsif @cell.include?(char.to_i)
       puts 'Error: Cannot have number as character! Please try again.'
-      start_game
+      game = Game.new
+      game.start_game
     elsif second_symbol == true && char == player_1_symbol
       puts 'Error: Cannot have character the same as other player! Please try again.'
-      start_game
+      game = Game.new
+      game.start_game
     end
   end
 
