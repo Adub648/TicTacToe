@@ -1,4 +1,4 @@
-## Tic Tac Toe
+# Tic Tac Toe
 
 A basic tic tac toe game made as a part of The Odin Project curriculum.
 
